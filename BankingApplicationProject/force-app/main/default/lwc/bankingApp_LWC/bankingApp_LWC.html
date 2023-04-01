@@ -1,0 +1,411 @@
+<template>
+    <div class="backgroundImg" style={getBackgroundImage} >
+    <template if:true={isHomePage}>
+            <form>
+                <div class="main-container slds-grid slds-grid_vertical">
+                    <div class=slds-col>
+
+                        <h1 class="text-align-center">
+                            <b class="main-heading">Welcome to XYZ Bank,</b> 
+                        </h1>
+
+                        <p class="slds-var-p-top_medium text-align-center">
+                            <span class="sub-heading">Please login below or click "Register" to sign up!</span>
+                        </p>
+
+                        <template if:true={errorCheck}>
+                            <div class="error slds-var-p-around_x-small slds-var-p-top_small" role="alert">
+                                <span>{errorMessage}</span>
+                            </div>
+                        </template>
+
+                    </div>
+
+                    <div class="column-input slds-var-p-top_small">                
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                                <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="username" size="xx-small"></lightning-icon>
+                                <input type="text" data-id="inputUsername" placeholder="Username" class="slds-input input-element" onchange={handleUserNameChange} required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column-input slds-col slds-var-p-top_small">               
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                                <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="username" size="xx-small"></lightning-icon>
+                                <input type="password" data-id="inputPassword" placeholder="Password" class="slds-input input-element" onchange={handlePasswordChange} required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column-input slds-col slds-var-p-top_small">
+                        <button type="submit" class="login-button slds-button" onclick={handleLogin}>Log In</button>
+                    </div>
+
+                <div class="column-input slds-col slds-var-p-top_small">
+                        <a class="forgot-password-text">Forgot your password?</a>
+                        <a class="register-text" onclick={showModalBox}>Register</a>
+                    </div>
+
+                </div>
+            </form>  
+        </template>
+            <!-- modal start -->      
+   <template if:true={isShowModal}>
+
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+        <!-- modal header start -->
+        <header class="slds-modal__header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                <lightning-icon icon-name="utility:close"
+                alternative-text="close"
+                variant="inverse"
+                size="small" ></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New User Signup</h2>
+        </header>
+
+        <!-- modal body start -->
+        <form style="background-color: white;">
+            <div class="main-container slds-grid slds-grid_vertical">
+                <div class=slds-col>
+                    <template if:true={errorCheck}>
+                        <div class="error slds-var-p-around_x-small slds-var-p-top_small" role="alert">
+                            <span>{errorMessage}</span>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="slds-col slds-var-p-top_small">                
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                            <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="FirstName" size="xx-small"></lightning-icon>
+                            <input type="text" data-id="inputFName" placeholder="First Name" class="slds-input input-element" onchange={handleFNameChange} required />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-var-p-top_small">                
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                            <lightning-icon class="input-icon" icon-name="utility:user" alternative-text="LastName" size="xx-small"></lightning-icon>
+                            <input type="text" data-id="inputLName" placeholder="Last Name" class="slds-input input-element" onchange={handleLNameChange} required />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-var-p-top_small">                
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                            <lightning-icon class="input-icon" icon-name="utility:email" alternative-text="Email" size="xx-small"></lightning-icon>
+                            <input type="email" data-id="inputEmail" placeholder="Email" class="slds-input input-element" onchange={handleEmailChange} required />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-var-p-top_small">               
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                            <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="Pass" size="xx-small"></lightning-icon>
+                            <input type="password" data-id="inputPassword" placeholder="Password" class="slds-input input-element" onchange={handleRegPasswordChange} required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-var-p-top_small">               
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                            <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="confirmPass" size="xx-small"></lightning-icon>
+                            <input type="password" data-id="inputConfirmPassword" placeholder="Confirm Password" class="slds-input input-element" onchange={handleRegConfirmPasswordChange} required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-col slds-var-p-top_small">
+                    <button type="submit" class="login-button slds-button" onclick={handleRegister}>Register</button>
+                </div>
+                </div>
+            </form>
+
+        <footer class="slds-modal__footer">
+            <!--<button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>-->
+        </footer>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!-- modal end -->
+        <template if:true={isUserPage}>
+            <form>
+                <div class="main-container slds-grid slds-grid_vertical">
+                    <div class=slds-col>
+
+                        <h1 class="text-align-center">
+                            <b class="main-heading">Welcome</b> </br>
+                            <b class="main-userheading">{loggedInUser.Full_Name__c},</b> 
+                            <div class="logout-btn slds-col slds-var-p-top_small">
+                                <template if:true={isbackBtn}>
+                                    <button type="submit" class="menu-button slds-button" onclick={handleBack}>Back</button>
+                                </template>
+                                <button type="submit" class="menu-button slds-button" onclick={handleLogout}>Log out</button>
+                            </div>
+                        </h1>
+                        <!--<p class="slds-var-p-top_medium text-align-center">
+                            <span class="sub-heading">Please login below or click "Register" to sign up!</span>
+                        </p>-->
+
+                        <template if:true={errorCheck}>
+                            <div class="error slds-var-p-around_x-small slds-var-p-top_small" role="alert">
+                                <span>{errorMessage}</span>
+                            </div>
+                        </template>
+
+                    </div>
+                    <template if:true={isMenuPage}>
+                        <div class="slds-col slds-var-p-top_small">
+                            <button type="submit" class="menu-button slds-button" onclick={handleInfo}>Account Info</button>
+                            <button type="submit" class="menu-button slds-button" onclick={handleWithdrawPopup}>Cardless Withdrawal</button>
+                            <button type="submit" class="menu-button slds-button" onclick={handleTransferPopup}>Transfer Money</button>
+                        </div>
+                        <div class="slds-col slds-var-p-top_small">
+                            <button type="submit" class="menu-button slds-button" onclick={handleStatement}>View E Statement</button>
+                            <button type="submit" class="menu-button slds-button" onclick={handlePasswordPopup}>Change Password</button>
+                        </div>
+                    </template>
+                    <template if:true={isInfoPage}>
+                        <b>Account Holder: {loggedInUser.Full_Name__c} </b><br/>
+                        <b>Account Number: {loggedInUser.Account_Number__c} </b><br/>
+                        <b> Email: {loggedInUser.Email__c} </b><br/>
+                        <b> Account Balance: {loggedInUser.Account_Balance__c} </b><br/>
+                    </template> 
+                </div>
+            </form> 
+        </template>
+        <!-- modal start -->      
+   <template if:true={isShowWithdrawModal}>
+
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container">
+    <!-- modal header start -->
+    <header class="slds-modal__header">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideWModalBox}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+            <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Withdrawal</h2>
+    </header>
+
+    <!-- modal body start -->
+    <form style="background-color: white;">
+        <div class="main-container slds-grid slds-grid_vertical">
+            <div class=slds-col>
+                <template if:true={errorCheck}>
+                    <div class="error slds-var-p-around_x-small slds-var-p-top_small" role="alert">
+                        <span>{errorMessage}</span>
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-col slds-var-p-top_small">                
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:moneybag" alternative-text="Amount" size="xx-small"></lightning-icon>
+                        <input type="number" data-id="inputAmount" placeholder="Amount" class="slds-input input-element" onchange={handleAmountChange} required />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">               
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="Pass" size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputPassword" placeholder="Password" class="slds-input input-element" onchange={handlePasswordChange} required/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">
+                <button type="submit" class="login-button slds-button" onclick={handleWithdraw}>Withdraw</button>
+            </div>
+            </div>
+        </form>
+
+    <footer class="slds-modal__footer">
+        <!--<button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>-->
+    </footer>
+    </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+    <!-- modal start -->      
+   <template if:true={isShowTransferModal}>
+
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true" aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container">
+    <!-- modal header start -->
+    <header class="slds-modal__header">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideWModalBox}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+            <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Money Transfer</h2>
+    </header>
+
+    <!-- modal body start -->
+    <form style="background-color: white;">
+        <div class="main-container slds-grid slds-grid_vertical">
+            <div class=slds-col>
+                <template if:true={errorCheck}>
+                    <div class="error slds-var-p-around_x-small slds-var-p-top_small" role="alert">
+                        <span>{errorMessage}</span>
+                    </div>
+                </template>
+            </div>
+            <div class="slds-col slds-var-p-top_small">                
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <!--<c-lookup object-api-name="Bank_User__c" label="Search User" onrecordupdated={handleUserChange} >
+                        </c-lookup>-->
+                        <lightning-icon class="input-icon" icon-name="utility:moneybag" alternative-text="Account_Number" size="xx-small"></lightning-icon>
+                        <input type="number" data-id="inputAccountNumber" placeholder="Account Number" class="slds-input input-element" onchange={handleAccountNumberChange} required />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">                
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:moneybag" alternative-text="Amount" size="xx-small"></lightning-icon>
+                        <input type="number" data-id="inputAmount" placeholder="Amount" class="slds-input input-element" onchange={handleAmountChange} required />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">               
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="Pass" size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputPassword" placeholder="Password" class="slds-input input-element" onchange={handlePasswordChange} required/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">
+                <button type="submit" class="login-button slds-button" onclick={handleTransferMethod}>Transfer</button>
+            </div>
+            </div>
+        </form>
+
+    <footer class="slds-modal__footer">
+        <!--<button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>-->
+    </footer>
+    </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+     <!-- modal start -->      
+   <template if:true={isShowPasswordModal}>
+
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-04" aria-modal="true" aria-describedby="modal-content-id-4" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container">
+    <!-- modal header start -->
+    <header class="slds-modal__header">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideWModalBox}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+            <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="modal-heading-04" class="slds-text-heading_medium slds-hyphenate">Change Password</h2>
+    </header>
+
+    <!-- modal body start -->
+    <form style="background-color: white;">
+        <div class="main-container slds-grid slds-grid_vertical">
+            <div class=slds-col>
+                <template if:true={errorCheck}>
+                    <div class="error slds-var-p-around_x-small slds-var-p-top_small" role="alert">
+                        <span>{errorMessage}</span>
+                    </div>
+                </template>
+            </div>
+            <div class="slds-col slds-var-p-top_small">               
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="Pass" size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputCurrentPassword" placeholder="Current Password" class="slds-input input-element" onchange={handleCPasswordChange} required/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">               
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="Pass" size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputNPassword" placeholder="New Password" class="slds-input input-element" onchange={handleNPasswordChange} required/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">               
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <lightning-icon class="input-icon" icon-name="utility:lock" alternative-text="confirmPass" size="xx-small"></lightning-icon>
+                        <input type="password" data-id="inputNConfirmPassword" placeholder="Confirm New Password" class="slds-input input-element" onchange={handleNConfirmPasswordChange} required/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-var-p-top_small">
+                <button type="submit" class="login-button slds-button" onclick={handlePasswordMethod}>Change Password</button>
+            </div>
+            </div>
+        </form>
+
+    <footer class="slds-modal__footer">
+        <!--<button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>-->
+    </footer>
+    </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+    <!--E-Statement Table Start-->
+    <template if:true={isShowEstatement}>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <!--Column Header start-->
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Name">Name</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Amount">Amount
+                        </div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Type">Type</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            <!--data is an array of record which is set in .js file-->
+                <template for:each={data} for:item="con">
+                    <tr key={con.Id}>
+                        <th scope="col">
+                            <div>{con.Name}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{con.Amount__c}</div>
+                        </th>
+                        <th scope="col">
+                            <div>{con.Type__c}</div>
+                        </th>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+    <!--Table END-->
+    </div>
+</template>
